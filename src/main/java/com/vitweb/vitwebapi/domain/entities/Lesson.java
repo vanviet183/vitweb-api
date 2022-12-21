@@ -1,5 +1,6 @@
 package com.vitweb.vitwebapi.domain.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.vitweb.vitwebapi.application.constants.TableNameConstant;
 import com.vitweb.vitwebapi.domain.entities.base.AbstractAuditingEntity;
 import lombok.AllArgsConstructor;
@@ -8,14 +9,15 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
-@Setter
 @Getter
-@AllArgsConstructor
+@Setter
 @NoArgsConstructor
-@Table(name = TableNameConstant.TBL_ROLE)
-public class Role extends AbstractAuditingEntity {
+@AllArgsConstructor
+@Table(name = TableNameConstant.TBL_LESSON)
+public class Lesson extends AbstractAuditingEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,5 +26,15 @@ public class Role extends AbstractAuditingEntity {
 
   private String name;
 
-  private String description;
+  private String slug;
+
+  private String path;
+
+  private String content;
+
+  // list lesson learned by users
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "lesson")
+  @JsonIgnore
+  private List<UserLesson> userLessons;
+
 }
