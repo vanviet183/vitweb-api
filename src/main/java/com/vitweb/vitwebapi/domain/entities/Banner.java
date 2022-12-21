@@ -10,12 +10,12 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-@Setter
 @Getter
-@AllArgsConstructor
+@Setter
 @NoArgsConstructor
-@Table(name = TableNameConstant.TBL_ROLE)
-public class Role extends AbstractAuditingEntity {
+@AllArgsConstructor
+@Table(name = TableNameConstant.TBL_BANNER)
+public class Banner extends AbstractAuditingEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,4 +25,6 @@ public class Role extends AbstractAuditingEntity {
   private String name;
 
   private String description;
+
+  private String bannerUrl;
 }
