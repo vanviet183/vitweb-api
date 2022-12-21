@@ -11,52 +11,72 @@ public class DevMessageConstant {
     public static final String DATA_WAS_DISABLE = "This object id = %s was disable";
     public static final String NO_DATA_SELECTED = "No data select result";
     public static final String DUPLICATE_NAME = "Duplicate name = %s";
-    public static final String FILE_IS_EMPTY = "File is empty";
+    public static final String FILE_IS_EMPTY = "FileWeb is empty";
   }
 
-  public static final class Help {
-    private Help() {
-    }
-
-    public static final String USER_WAS_DELETE = "User id = %s was delete. Can not create help object";
+  public static final class Token {
+    public static final String TOKEN_IS_EXPIRED = "Token is expired time";
+    public static final String TOKEN_IS_INVALID = "Token is invalid";
+    public static final String CAN_NOT_GENERATE_TOKEN = "Can not generate token by token, try it with refresh token";
   }
 
-  public static final class Answer {
-    private Answer() {
-    }
-
-    public static final String FULL_ANSWER_FOR_THIS_QUESTION = "Full answer for this question";
+  private DevMessageConstant() {
   }
 
-  public static final class Gift {
-    private Gift() {
-    }
-
+  public static final class Category {
+    public static final String ERR_NOT_FOUND_BY_ID = "Not found category by id = %s";
+    public static final String NAME_IS_EXIST = "Category with name '%s' is exist";
+    public static final String DUPLICATE_NAME = "Duplicate category name '%s'";
   }
 
-  public static final class GiftOrder {
-    private GiftOrder() {
-    }
+  public static final class Subject {
+    public static final String ERR_NOT_FOUND_BY_ID = "Not found subject by id = %s";
+    public static final String DUPLICATE_NAME = "Duplicate subject name '%s'";
+  }
 
-    public static final String CAN_NOT_CREATE_GIFT_ORDER = "Can not create gift order";
+  public static final class Lesson {
+    public static final String ERR_NOT_FOUND_BY_ID = "Not found lesson by id = %s";
+    public static final String ERR_NOT_FOUND_LESSON_BY_SUBJECT_ID = "Not found lesson by subject id = %s";
+  }
+
+  public static final class LessonStudent {
+    public static final String ERR_NOT_FOUND_BY_ID = "Not found lesson student by id = %s";
+  }
+
+  public static final class Comment {
+    public static final String ERR_NOT_FOUND_BY_ID = "Not found comment by id = %s";
+    public static final String ERR_NOT_YOURS = "Comment id = '%s' is not yours.";
+  }
+
+  public static final class Notification {
+    public static final String ERR_NOT_FOUND_BY_ID = "Not found notification by id = %s";
+  }
+
+  public static final class Schedule {
+    public static final String ERR_NOT_FOUND_BY_ID = "Not found schedule by id = %s";
   }
 
   public static final class Role {
-    private Role() {
-    }
-
-    public static final String NOT_FOUND_ROLE_BY_NAME = "Can not find role by name = %s";
+    public static final String ERR_NOT_FOUND_BY_ID = "Not found role by id = %s";
+    public static final String NAME_IS_EXIST = "Role with name '%s' is exist";
+    public static final String DUPLICATE_NAME = "Duplicate role name '%s'";
   }
 
   public static final class User {
-    private User() {
-    }
-
-    public static final String NOT_FOUND_USER_BY_USERNAME = "Can not find user by username = %s";
-    public static final String NOT_FOUND_USER_BY_EMAIL = "Can not find user by email = %s";
-    public static final String CAN_NOT_CREATE_USER_BY_USERNAME = "Can not create user because duplicate username = %s";
-    public static final String CAN_NOT_CREATE_USER_BY_EMAIL = "Can not create user because duplicate email = %s";
-    public static final String NOT_FOUND_USER_BY_TOKEN_PASS = "Can not find user by token reset pass = %s";
+    public static final String ERR_NOT_FOUND_BY_ID = "Not found user student by id = %s";
+    public static final String NOT_FOUND_USER_BY_USERNAME = "Not found user student by id = %s";
+    public static final String ERR_NOT_FOUND_BY_EMAIL = "Not found user by email = %s";
+    public static final String ERR_NOT_FOUND_BY_TOKEN = "Not found token = %s";
+    public static final String ERR_EXPIRED_BY_TOKEN = "Token = %s has expired";
+    public static final String INVALID_STUDENT_CODE = "Student code is invalid";
+    public static final String INVALID_PASSWORD = "Password is invalid";
   }
 
+  public static final class UserSubjectRelation {
+    public static final String CAN_NOT_REMOVE_OBJECT = "Can not remove object with userId = %s and subjectId = %s";
+  }
+
+  public static final class SettingByKey{
+    public static final String ERR_NOT_FOUND_BY_KEY = "Not found setting by key = %s";
+  }
 }

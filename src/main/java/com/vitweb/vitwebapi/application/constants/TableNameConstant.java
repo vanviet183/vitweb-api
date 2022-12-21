@@ -21,7 +21,8 @@ public class TableNameConstant {
   public static final String TBL_TOKEN = "tokens";
   public static final String TBL_USER = "users";
   public static final String TBL_USER_LESSON = "user_lessons";
-  public static final String TBL_VOUCHER= "vouchers";
+  public static final String TBL_VOUCHER = "vouchers";
+  public static final String TBL_MAIL_LOG = "mail_logs";
 
 
 }
