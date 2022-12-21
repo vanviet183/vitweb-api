@@ -5,16 +5,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
-public class AuthenticationResponse {
+@NoArgsConstructor
+@AllArgsConstructor
+public class RequestResponse {
 
-  private String token;
+  private boolean status;
 
-  private String tokenType;
-
-  private String refreshToken;
-
+  private String message;
 }
