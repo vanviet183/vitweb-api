@@ -1,4 +1,4 @@
-package com.vitweb.vitwebapi.application.inputs.user;
+package com.vitweb.vitwebapi.application.inputs.category;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,14 +7,11 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
-public class CreateUserInput {
+@NoArgsConstructor
+public class CreateCategoryInput {
 
   private String name;
 
-  private String email;
-
-  private String password;
-
+  private String description;
 }
