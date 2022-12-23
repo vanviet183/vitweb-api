@@ -7,21 +7,33 @@ import com.vitweb.vitwebapi.application.inputs.user.CreateUserInput;
 import com.vitweb.vitwebapi.application.repositories.IRoleRepository;
 import com.vitweb.vitwebapi.application.repositories.IUserRepository;
 import com.vitweb.vitwebapi.application.services.IAuthService;
-import com.vitweb.vitwebapi.application.services.ITokenService;
 import com.vitweb.vitwebapi.application.utils.JwtUtil;
 import com.vitweb.vitwebapi.configs.exceptions.InvalidException;
 import com.vitweb.vitwebapi.configs.exceptions.VsException;
 import com.vitweb.vitwebapi.domain.entities.Role;
 import com.vitweb.vitwebapi.domain.entities.User;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class AuthServiceImpl implements IAuthService {
+
+  @Value("${jwt.secret_key}")
+  private String SECRET_KEY;
+
+  @Value("${jwt.time_token_expiration}")
+  private Integer TIME_TOKEN_EXPIRATION;
 
   private final IUserRepository userRepository;
   private final JwtUtil jwtUtil;
@@ -70,6 +82,35 @@ public class AuthServiceImpl implements IAuthService {
     user.setAuthProvider(AuthenticationProvider.LOCAL);
 
     return userRepository.save(user);
+  }
+
+  @Override
+  public AuthenticationResponse refreshToken(HttpServletRequest request, HttpServletResponse response) {
+    try {
+      String refreshToken = getTokenFromRequest(request);
+      if (refreshToken != null && jwtUtil.validateJwtToken(refreshToken)) {
+        String uuid = jwtUtil.getUUIDFromJwtToken(refreshToken);
+        String accessToken = Jwts.builder()
+            .setSubject(uuid)
+            .setIssuedAt(new Date())
+            .setExpiration(new Date(System.currentTimeMillis() + TIME_TOKEN_EXPIRATION))
+            .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
+            .compact();
+        return new AuthenticationResponse(accessToken, CommonConstant.BEARER_TOKEN, refreshToken);
+      }
+    } catch (Exception ex) {
+      response.setHeader("error", ex.getMessage());
+    }
+    return null;
+  }
+
+  private String getTokenFromRequest(HttpServletRequest request) {
+    String authorizationHeader = request.getHeader("Authorization");
+
+    if (StringUtils.hasText(authorizationHeader) && authorizationHeader.startsWith("Bearer ")) {
+      return authorizationHeader.substring(7);
+    }
+    return null;
   }
 
   private void checkUserExists(Optional<User> user) {
