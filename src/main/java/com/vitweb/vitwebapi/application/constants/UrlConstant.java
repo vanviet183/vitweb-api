@@ -165,6 +165,7 @@ public class UrlConstant {
     public static final String LIST = PREFIX;
     public static final String GET = PREFIX + "/{token}";
     public static final String VERIFY = PREFIX + "/verify/{token}";
+    public static final String VERIFY_FORGOT_PASSWORD = PREFIX + "/verify-forgot-password/{token}";
     public static final String RESEND = PREFIX + "/resend/{token}";
     public static final String FORGOT_PASSWORD = PREFIX + "/forgot-password/{token}";
     public static final String CREATE = PREFIX;
@@ -292,6 +293,7 @@ public class UrlConstant {
     public static final String LOGIN = PRE_FIX + "/login";
     public static final String SIGNUP = PRE_FIX + "/signup";
     public static final String REFRESH_TOKEN = PRE_FIX + "/refresh-token";
+    public static final String REFRESH_PASSWORD = PRE_FIX + "/refresh-password/{email}";
     public static final String FORGOT_PASSWORD = PRE_FIX + "/forgot-password/{email}";
     public static final String CHANGE_PASSWORD = PRE_FIX + "/change-password/{email}";
     public static final String RESET_PASSWORD = PRE_FIX + "/reset-password/{email}";
