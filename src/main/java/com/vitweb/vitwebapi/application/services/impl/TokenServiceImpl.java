@@ -1,5 +1,7 @@
 package com.vitweb.vitwebapi.application.services.impl;
 
+import com.vitweb.vitwebapi.adapter.web.v1.transfer.parameter.auth.RefreshPasswordRequest;
+import com.vitweb.vitwebapi.adapter.web.v1.transfer.parameter.auth.VerifyForgotPasswordRequest;
 import com.vitweb.vitwebapi.adapter.web.v1.transfer.response.RequestResponse;
 import com.vitweb.vitwebapi.application.constants.CommonConstant;
 import com.vitweb.vitwebapi.application.constants.DevMessageConstant;
@@ -11,6 +13,7 @@ import com.vitweb.vitwebapi.application.utils.SendMailUtil;
 import com.vitweb.vitwebapi.configs.exceptions.VsException;
 import com.vitweb.vitwebapi.domain.entities.Token;
 import com.vitweb.vitwebapi.domain.entities.User;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Calendar;
@@ -23,7 +26,9 @@ public class TokenServiceImpl implements ITokenService {
   private final ITokenRepository tokenRepository;
   private final IUserRepository userRepository;
 
-  public TokenServiceImpl(ITokenRepository tokenRepository, IUserRepository userRepository) {
+
+  public TokenServiceImpl(ITokenRepository tokenRepository, IUserRepository userRepository,
+                          PasswordEncoder passwordEncoder) {
     this.tokenRepository = tokenRepository;
     this.userRepository = userRepository;
   }
@@ -43,23 +48,16 @@ public class TokenServiceImpl implements ITokenService {
 
   @Override
   public RequestResponse verify(String token) {
-    Optional<Token> oldToken = tokenRepository.findByToken(token);
-    checkTokenExists(oldToken);
+    try {
+      Token oldToken = validateToken(token);
+      User user = oldToken.getUser();
 
-    User user = oldToken.get().getUser();
-    if (user.getStatus()) {
-      throw new VsException("Account confirmed!");
+      // Update status user and verification token
+      user.setStatus(true);
+      userRepository.save(user);
+    } catch (Exception ex) {
+      throw new VsException(ex.getMessage());
     }
-
-    Calendar calendar = Calendar.getInstance();
-    if((oldToken.get().getExpirationTime().getTime() - calendar.getTime().getTime()) <= 0) {
-      tokenRepository.delete(oldToken.get());
-      throw new VsException("Token expired");
-    }
-
-    // Update status user and verification token
-    user.setStatus(true);
-    userRepository.save(user);
 
     return new RequestResponse(CommonConstant.TRUE, "Verify Successfully!");
   }
@@ -86,6 +84,40 @@ public class TokenServiceImpl implements ITokenService {
   public void createTokenVerify(String token, User user) {
     Token newToken = new Token(token, user);
     tokenRepository.save(newToken);
+  }
+
+  @Override
+  public void createTokenVerify(String token, User user, int expirationTime) {
+    Token newToken = new Token(token, user, expirationTime);
+    tokenRepository.save(newToken);
+  }
+
+  @Override
+  public RequestResponse verifyForgotPassword(VerifyForgotPasswordRequest request) {
+    try {
+      Token oldToken = validateToken(request.getToken());
+      User user = oldToken.getUser();
+      if(!user.getEmail().equals(request.getEmail())) {
+        throw new VsException("Token is not correct !");
+      }
+    } catch (Exception ex) {
+      throw new VsException(ex.getMessage());
+    }
+
+    return new RequestResponse(CommonConstant.TRUE, "Verify forgot password successfully !");
+  }
+
+  private Token validateToken(String token){
+    Optional<Token> oldToken = tokenRepository.findByToken(token);
+    checkTokenExists(oldToken);
+
+    Calendar calendar = Calendar.getInstance();
+    if((oldToken.get().getExpirationTime().getTime() - calendar.getTime().getTime()) <= 0) {
+      tokenRepository.delete(oldToken.get());
+      throw new VsException("Token expired !");
+    }
+
+    return oldToken.get();
   }
 
   private void checkTokenExists(Optional<Token> Token) {

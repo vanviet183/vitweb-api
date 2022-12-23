@@ -1,19 +1,25 @@
 package com.vitweb.vitwebapi.application.services.impl;
 
 import com.vitweb.vitwebapi.adapter.web.v1.transfer.parameter.auth.AuthenticationRequest;
+import com.vitweb.vitwebapi.adapter.web.v1.transfer.parameter.auth.ChangePasswordRequest;
+import com.vitweb.vitwebapi.adapter.web.v1.transfer.parameter.auth.RefreshPasswordRequest;
 import com.vitweb.vitwebapi.adapter.web.v1.transfer.response.AuthenticationResponse;
+import com.vitweb.vitwebapi.adapter.web.v1.transfer.response.RequestResponse;
 import com.vitweb.vitwebapi.application.constants.*;
 import com.vitweb.vitwebapi.application.inputs.user.CreateUserInput;
 import com.vitweb.vitwebapi.application.repositories.IRoleRepository;
 import com.vitweb.vitwebapi.application.repositories.IUserRepository;
 import com.vitweb.vitwebapi.application.services.IAuthService;
+import com.vitweb.vitwebapi.application.services.ITokenService;
 import com.vitweb.vitwebapi.application.utils.JwtUtil;
+import com.vitweb.vitwebapi.application.utils.SendMailUtil;
 import com.vitweb.vitwebapi.configs.exceptions.InvalidException;
 import com.vitweb.vitwebapi.configs.exceptions.VsException;
 import com.vitweb.vitwebapi.domain.entities.Role;
 import com.vitweb.vitwebapi.domain.entities.User;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -38,13 +44,15 @@ public class AuthServiceImpl implements IAuthService {
   private final IUserRepository userRepository;
   private final JwtUtil jwtUtil;
   private final ModelMapper modelMapper;
+  private final ITokenService tokenService;
   private final PasswordEncoder passwordEncoder;
   private final IRoleRepository roleRepository;
 
-  public AuthServiceImpl(IUserRepository userRepository, JwtUtil jwtUtil, ModelMapper modelMapper, PasswordEncoder passwordEncoder, IRoleRepository roleRepository) {
+  public AuthServiceImpl(IUserRepository userRepository, JwtUtil jwtUtil, ModelMapper modelMapper, ITokenService tokenService, PasswordEncoder passwordEncoder, IRoleRepository roleRepository) {
     this.userRepository = userRepository;
     this.jwtUtil = jwtUtil;
     this.modelMapper = modelMapper;
+    this.tokenService = tokenService;
     this.passwordEncoder = passwordEncoder;
     this.roleRepository = roleRepository;
   }
@@ -102,6 +110,42 @@ public class AuthServiceImpl implements IAuthService {
       response.setHeader("error", ex.getMessage());
     }
     return null;
+  }
+
+  @Override
+  public RequestResponse forgotPassword(String email, String applicationUrl) {
+    Optional<User> user = userRepository.findByEmail(email);
+    checkUserExists(user);
+
+    String sixNum = RandomStringUtils.randomNumeric(6);
+    tokenService.createTokenVerify(sixNum, user.get(), 60);
+    SendMailUtil.sendMailSimple(user.get().getEmail(), "Mã khôi phục mật khẩu: " + sixNum, "Yêu cầu khôi phục mật khẩu Vit Web");
+    return new RequestResponse(CommonConstant.TRUE, "");
+  }
+
+  @Override
+  public RequestResponse refreshPassword(RefreshPasswordRequest request) {
+    Optional<User> user = userRepository.findByEmail(request.getEmail());
+    checkUserExists(user);
+
+    user.get().setPassword(passwordEncoder.encode(request.getNewPassword()));
+    userRepository.save(user.get());
+    return new RequestResponse(CommonConstant.TRUE, "Refresh password successfully !");
+  }
+
+  @Override
+  public RequestResponse changePassword(ChangePasswordRequest request) {
+    Optional<User> user = userRepository.findByEmail(request.getEmail());
+    checkUserExists(user);
+
+    String oldPasswordInput = passwordEncoder.encode(request.getOldPassword());
+    if(!user.get().getPassword().equals(oldPasswordInput)) {
+      throw new VsException("The current password entered is incorrect");
+    }
+
+    user.get().setPassword(passwordEncoder.encode(request.getNewPassword()));
+    userRepository.save(user.get());
+    return new RequestResponse(CommonConstant.TRUE, "Change password successfully");
   }
 
   private String getTokenFromRequest(HttpServletRequest request) {
