@@ -6,11 +6,17 @@ import com.vitweb.vitwebapi.application.inputs.user.CreateUserInput;
 import com.vitweb.vitwebapi.domain.entities.User;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 @Service
 public interface IAuthService {
 
   AuthenticationResponse login(AuthenticationRequest authenticationRequest);
 
   User signUp(CreateUserInput createUserInput);
+
+  AuthenticationResponse refreshToken(HttpServletRequest request, HttpServletResponse response);
+
 
 }

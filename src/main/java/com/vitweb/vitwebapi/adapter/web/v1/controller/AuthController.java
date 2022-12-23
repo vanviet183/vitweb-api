@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 @RestApiV1
@@ -42,6 +43,11 @@ public class AuthController {
                 applicationUrl(request)
         ));
         return VsResponseUtil.ok(user);
+    }
+
+    @PostMapping(UrlConstant.Auth.REFRESH_TOKEN)
+    public ResponseEntity<?> refreshToken(HttpServletRequest request, HttpServletResponse response) {
+        return ResponseEntity.ok().body(authService.refreshToken(request, response));
     }
 
     private String applicationUrl(HttpServletRequest request) {
