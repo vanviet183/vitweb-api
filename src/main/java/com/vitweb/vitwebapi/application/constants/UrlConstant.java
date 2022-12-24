@@ -207,7 +207,8 @@ public class UrlConstant {
     public static final String PREFIX = "/users";
     public static final String LIST = PREFIX;
     public static final String GET = PREFIX + "/{id}";
-    public static final String CREATE = PREFIX;
+    public static final String CHANGE_AVATAR = PREFIX + "/change-avatar/{id}";
+    public static final String FOLLOW = PREFIX + "/follow/{id}";
     public static final String UPDATE = PREFIX + "/{id}";
     public static final String DELETE = PREFIX + "/{id}";
 
