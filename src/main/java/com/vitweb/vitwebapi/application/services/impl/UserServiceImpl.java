@@ -8,6 +8,7 @@ import com.vitweb.vitwebapi.application.inputs.user.UpdateUserInput;
 import com.vitweb.vitwebapi.application.repositories.IUserRepository;
 import com.vitweb.vitwebapi.application.services.IUserService;
 import com.vitweb.vitwebapi.application.utils.CloudinaryUtil;
+import com.vitweb.vitwebapi.application.utils.SecurityUtil;
 import com.vitweb.vitwebapi.configs.exceptions.VsException;
 import com.vitweb.vitwebapi.domain.entities.User;
 import org.modelmapper.ModelMapper;
@@ -63,6 +64,38 @@ public class UserServiceImpl implements IUserService {
     checkUserExists(user);
     userRepository.deleteById(id);
     return new RequestResponse(CommonConstant.TRUE, CommonConstant.EMPTY_STRING);
+  }
+
+  @Override
+  public RequestResponse follow(String idFollow) {
+    Optional<User> oldUser = userRepository.findById(SecurityUtil.getCurrentUserLogin());
+    checkUserExists(oldUser);
+
+    Optional<User> userFollow = userRepository.findById(idFollow);
+    checkUserExists(userFollow);
+
+    List<User> follows = oldUser.get().getFollowings();
+    follows.add(userFollow.get());
+
+    oldUser.get().setFollowings(follows);
+    userRepository.save(oldUser.get());
+    return new RequestResponse(CommonConstant.TRUE, "Follow successfully !");
+  }
+
+  @Override
+  public RequestResponse unfollow(String idFollow) {
+    Optional<User> oldUser = userRepository.findById(SecurityUtil.getCurrentUserLogin());
+    checkUserExists(oldUser);
+
+    Optional<User> userFollow = userRepository.findById(idFollow);
+    checkUserExists(userFollow);
+
+    List<User> follows = oldUser.get().getFollowings();
+    follows.remove(userFollow.get());
+
+    oldUser.get().setFollowings(follows);
+    userRepository.save(oldUser.get());
+    return new RequestResponse(CommonConstant.TRUE, "Unfollow successfully !");
   }
 
   private void checkUserExists(Optional<User> user) {

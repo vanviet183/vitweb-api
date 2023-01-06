@@ -9,6 +9,8 @@ import com.vitweb.vitwebapi.application.services.IUserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestApiV1
 public class UserController {
 
@@ -36,6 +38,16 @@ public class UserController {
   @PostMapping(UrlConstant.User.CHANGE_AVATAR)
   public ResponseEntity<?> changeAvatarUser(@ModelAttribute ChangeAvatarInput changeAvatarInput) {
     return VsResponseUtil.ok(userService.changeAvatar(changeAvatarInput));
+  }
+
+  @PostMapping(UrlConstant.User.FOLLOW)
+  public ResponseEntity<?> follow(@Valid @PathVariable("idFollow") String idFollow) {
+    return VsResponseUtil.ok(userService.follow(idFollow));
+  }
+
+  @PostMapping(UrlConstant.User.UNFOLLOW)
+  public ResponseEntity<?> unfollow(@Valid @PathVariable("idFollow") String idFollow) {
+    return VsResponseUtil.ok(userService.unfollow(idFollow));
   }
 
   @DeleteMapping(UrlConstant.User.DELETE)
