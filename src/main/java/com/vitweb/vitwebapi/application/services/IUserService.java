@@ -19,5 +19,9 @@ public interface IUserService {
 
   RequestResponse changeAvatar(ChangeAvatarInput changeAvatarInput);
 
+  RequestResponse follow(String idFollow);
+
+  RequestResponse unfollow(String idFollow);
+
   RequestResponse deleteById(String id);
 }

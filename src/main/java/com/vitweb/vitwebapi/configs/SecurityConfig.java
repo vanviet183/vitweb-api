@@ -53,7 +53,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
   private static final String[] STUDENT_LIST_URLS = {
       "/api/v1/categories/**",
-      "/api/v1/courses/**"
+      "/api/v1/courses/**",
+      "/api/v1/users/**",
   };
 
   @Bean
