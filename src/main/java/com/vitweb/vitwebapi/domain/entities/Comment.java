@@ -36,6 +36,14 @@ public class Comment extends AbstractAuditingEntity {
 
   @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
   @JsonIgnore
+  private Post post;
+
+  @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+  @JsonIgnore
+  private Lesson lesson;
+
+  @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+  @JsonIgnore
   private User user;
 
   // Comment parent
