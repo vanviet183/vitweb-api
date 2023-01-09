@@ -7,10 +7,12 @@ import com.vitweb.vitwebapi.application.constants.DevMessageConstant;
 import com.vitweb.vitwebapi.application.constants.UserMessageConstant;
 import com.vitweb.vitwebapi.application.inputs.course.CreateCourseInput;
 import com.vitweb.vitwebapi.application.inputs.course.UpdateCourseInput;
+import com.vitweb.vitwebapi.application.repositories.ICategoryRepository;
 import com.vitweb.vitwebapi.application.repositories.ICourseRepository;
 import com.vitweb.vitwebapi.application.services.ICourseService;
 import com.vitweb.vitwebapi.application.utils.CloudinaryUtil;
 import com.vitweb.vitwebapi.configs.exceptions.VsException;
+import com.vitweb.vitwebapi.domain.entities.Category;
 import com.vitweb.vitwebapi.domain.entities.Course;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -22,10 +24,12 @@ import java.util.Optional;
 @Service
 public class CourseServiceImpl implements ICourseService {
   private final ICourseRepository courseRepository;
+  private final ICategoryRepository categoryRepository;
   private final ModelMapper modelMapper;
 
-  public CourseServiceImpl(ICourseRepository courseRepository, ModelMapper modelMapper) {
+  public CourseServiceImpl(ICourseRepository courseRepository, ICategoryRepository categoryRepository, ModelMapper modelMapper) {
     this.courseRepository = courseRepository;
+    this.categoryRepository = categoryRepository;
     this.modelMapper = modelMapper;
   }
 
@@ -44,7 +48,11 @@ public class CourseServiceImpl implements ICourseService {
 
   @Override
   public Course createCourse(CreateCourseInput createCourseInput) {
+    Optional<Category> oldCategory = categoryRepository.findById(createCourseInput.getIdCategory());
+    checkCategoryExists(oldCategory, createCourseInput.getIdCategory());
+
     Course newCourse = modelMapper.map(createCourseInput, Course.class);
+    newCourse.setCategory(oldCategory.get());
     setImageCourse(newCourse, createCourseInput.getFile());
 
     Slugify slugify = new Slugify();
@@ -83,6 +91,14 @@ public class CourseServiceImpl implements ICourseService {
     if(Course.isEmpty()) {
       throw new VsException(UserMessageConstant.ERR_EXCEPTION_GENERAL,
           String.format(DevMessageConstant.Common.NOT_FOUND_OBJECT_BY_ID, "course", id));
+    }
+  }
+
+  private void checkCategoryExists(Optional<Category> Category, Long id) {
+    if(Category.isEmpty()) {
+      throw new VsException(UserMessageConstant.Category.ERR_NOT_FOUND_BY_ID,
+          String.format(DevMessageConstant.Category.ERR_NOT_FOUND_BY_ID, id),
+          new String[]{id.toString()});
     }
   }
 

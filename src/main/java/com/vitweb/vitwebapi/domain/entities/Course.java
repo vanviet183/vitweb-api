@@ -44,6 +44,9 @@ public class Course extends AbstractAuditingEntity {
   @JsonIgnore
   private List<User> users;
 
+  @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+  private Category category;
+
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "course")
   @JsonIgnore
   private List<Bill> bills;

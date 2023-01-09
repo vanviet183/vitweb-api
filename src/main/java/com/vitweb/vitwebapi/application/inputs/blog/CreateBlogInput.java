@@ -1,4 +1,4 @@
-package com.vitweb.vitwebapi.application.inputs.course;
+package com.vitweb.vitwebapi.application.inputs.blog;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -6,19 +6,19 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-public class CreateCourseInput {
+@AllArgsConstructor
+public class CreateBlogInput {
 
   private Long idCategory;
 
-  private String name;
+  private String subject;
 
-  private String description;
+  private String content;
 
-  private MultipartFile file;
-
-  private Double price;
+  private List<MultipartFile> files;
 }

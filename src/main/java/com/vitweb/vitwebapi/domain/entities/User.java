@@ -119,6 +119,10 @@ public class User extends AbstractAuditingEntity {
   @JsonIgnore
   private List<Rate> rates;
 
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+  @JsonIgnore
+  private List<Post> posts;
+
   @Enumerated(EnumType.STRING)
   private AuthenticationProvider authProvider;
 

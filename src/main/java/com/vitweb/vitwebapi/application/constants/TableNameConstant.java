@@ -15,6 +15,7 @@ public class TableNameConstant {
   public static final String TBL_IMAGE = "images";
   public static final String TBL_LESSON = "lessons";
   public static final String TBL_NOTIFICATION = "notifications";
+  public static final String TBL_POST = "posts";
   public static final String TBL_PODCAST = "podcasts";
   public static final String TBL_RATE = "rates";
   public static final String TBL_ROLE = "roles";

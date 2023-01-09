@@ -41,4 +41,8 @@ public class Category extends AbstractAuditingEntity {
   @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   private List<Blog> blogs = new ArrayList<>();
 
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "category")
+  @JsonIgnore
+  private List<Course> courses;
+
 }
