@@ -34,7 +34,7 @@ public class Post extends AbstractAuditingEntity {
 
   private String videos;
 
-  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "post")
   @JsonIgnore
   private List<Comment> comments;
 

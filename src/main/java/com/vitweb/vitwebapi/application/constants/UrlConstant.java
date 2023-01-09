@@ -59,8 +59,9 @@ public class UrlConstant {
     public static final String LIST = PREFIX;
     public static final String GET = PREFIX + "/{id}";
     public static final String CREATE = PREFIX;
-    public static final String CREATE_COMMENT_BLOG = PREFIX + "comment-blogs";
-    public static final String CREATE_COMMENT_LESSON = PREFIX + "comment-lessons";
+    public static final String CREATE_COMMENT_BLOG = PREFIX + "/comment-blog";
+    public static final String CREATE_COMMENT_POST = PREFIX + "/comment-post";
+    public static final String CREATE_COMMENT_LESSON = PREFIX + "/comment-lesson";
     public static final String UPDATE = PREFIX;
     public static final String DELETE = PREFIX + "/{id}";
 
