@@ -33,7 +33,7 @@ public class UrlConstant {
     public static final String LIST = PREFIX;
     public static final String GET = PREFIX + "/{id}";
     public static final String CREATE = PREFIX;
-    public static final String UPDATE = PREFIX + "/{id}";
+    public static final String UPDATE = PREFIX;
     public static final String DELETE = PREFIX + "/{id}";
 
     public Blog() {
@@ -143,6 +143,19 @@ public class UrlConstant {
     public static final String DELETE = PREFIX + "/{id}";
 
     public Podcast() {
+
+    }
+  }
+
+  public static final class Post {
+    public static final String PREFIX = "/posts";
+    public static final String LIST = PREFIX;
+    public static final String GET = PREFIX + "/{id}";
+    public static final String CREATE = PREFIX;
+    public static final String UPDATE = PREFIX;
+    public static final String DELETE = PREFIX + "/{id}";
+
+    public Post() {
 
     }
   }

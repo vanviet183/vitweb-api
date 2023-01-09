@@ -1,12 +1,14 @@
 package com.vitweb.vitwebapi.domain.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.nimbusds.jose.shaded.json.JSONObject;
 import com.vitweb.vitwebapi.application.constants.TableNameConstant;
 import com.vitweb.vitwebapi.domain.entities.base.AbstractAuditingEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import springfox.documentation.spring.web.json.Json;
 
 import javax.persistence.*;
 import java.util.List;
@@ -24,11 +26,13 @@ public class Blog extends AbstractAuditingEntity {
   @Column(name = "id")
   private Long id;
 
-  private String name;
+  private String subject;
 
   private String slug;
 
-  private String description;
+  private String content;
+
+  private String images;
 
   private Long amountReader;
 

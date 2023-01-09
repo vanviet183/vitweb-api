@@ -1,6 +1,7 @@
 package com.vitweb.vitwebapi.domain.entities;
 
-import com.vitweb.vitwebapi.adapter.web.base.EFavorite;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.vitweb.vitwebapi.adapter.web.base.EStatus;
 import com.vitweb.vitwebapi.application.constants.TableNameConstant;
 import com.vitweb.vitwebapi.domain.entities.base.AbstractAuditingEntity;
 import lombok.AllArgsConstructor;
@@ -9,30 +10,34 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = TableNameConstant.TBL_FAVORITE_ITEM)
-public class FavoriteItem extends AbstractAuditingEntity {
+@Table(name = TableNameConstant.TBL_POST)
+public class Post extends AbstractAuditingEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id")
   private Long id;
 
+  private String content;
+
   @Enumerated(EnumType.STRING)
-  private EFavorite type;
+  private EStatus status;
 
-  @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
-  private Blog blog;
+  private String images;
 
-  @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
-  private Podcast podcast;
+  private String videos;
 
-  @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  @JsonIgnore
+  private List<Comment> comments;
+
+  @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
   private User user;
-
 }

@@ -50,6 +50,7 @@ public class LessonServiceImpl implements ILessonService {
     checkCourseExists(oldCourse, createLessonInput.getIdCourse());
 
     Lesson newLesson = modelMapper.map(createLessonInput, Lesson.class);
+    newLesson.setCourse(oldCourse.get());
     Slugify slugify = new Slugify();
     String result = slugify.slugify(createLessonInput.getName());
     newLesson.setSlug(result);
