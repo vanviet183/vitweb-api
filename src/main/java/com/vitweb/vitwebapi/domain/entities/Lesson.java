@@ -37,4 +37,6 @@ public class Lesson extends AbstractAuditingEntity {
   @JsonIgnore
   private List<UserLesson> userLessons;
 
+  @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+  private Course course;
 }

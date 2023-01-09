@@ -25,16 +25,16 @@ public class MyUserDetailsService implements UserDetailsService {
   }
 
   @Override
-  public UserDetails loadUserByUsername(String uuid) throws UsernameNotFoundException {
-    Optional<User> user = userRepository.findById(uuid);
+  public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    Optional<User> user = userRepository.findByEmail(email);
     if (user.isEmpty()) {
       throw new VsException(UserMessageConstant.ERR_EXCEPTION_GENERAL,
-          String.format(DevMessageConstant.User.ERR_NOT_FOUND_BY_ID, uuid));
+          String.format(DevMessageConstant.User.ERR_NOT_FOUND_BY_ID, email));
     }
     Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
     user.get().getRoles().forEach(item -> grantedAuthorities.add(new SimpleGrantedAuthority(item.getName().toString())));
 
-    return new org.springframework.security.core.userdetails.User(user.get().getId(), user.get().getPassword(),
+    return new org.springframework.security.core.userdetails.User(user.get().getEmail(), user.get().getPassword(),
         grantedAuthorities);
   }
 

@@ -34,7 +34,7 @@ public class RequestHeader {
   /**
    * @return String
    */
-  public String getUUID() {
+  public String getUser() {
     String bearerToken = httpServletRequest.getHeader(HeaderConstant.AUTHORIZATION);
     if (StringUtils.isEmpty(bearerToken)) {
       return AuthorityConstant.ANONYMOUS_USER;
@@ -43,7 +43,7 @@ public class RequestHeader {
     try {
       SignedJWT decodedJWT = SignedJWT.parse(token);
       Map<String, Object> payload = decodedJWT.getPayload().toJSONObject();
-      return (String) payload.get(AuthorityConstant.CLAIM_UUID);
+      return (String) payload.get(AuthorityConstant.CLAIM_SUB);
     } catch (ParseException e) {
       throw new VsException(UserMessageConstant.ERR_EXCEPTION_ACCESS_SYSTEM, e.getMessage());
     }

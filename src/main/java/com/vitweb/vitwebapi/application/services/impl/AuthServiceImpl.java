@@ -5,7 +5,10 @@ import com.vitweb.vitwebapi.adapter.web.v1.transfer.parameter.auth.ChangePasswor
 import com.vitweb.vitwebapi.adapter.web.v1.transfer.parameter.auth.RefreshPasswordRequest;
 import com.vitweb.vitwebapi.adapter.web.v1.transfer.response.AuthenticationResponse;
 import com.vitweb.vitwebapi.adapter.web.v1.transfer.response.RequestResponse;
-import com.vitweb.vitwebapi.application.constants.*;
+import com.vitweb.vitwebapi.application.constants.AuthenticationProvider;
+import com.vitweb.vitwebapi.application.constants.CommonConstant;
+import com.vitweb.vitwebapi.application.constants.RoleConstant;
+import com.vitweb.vitwebapi.application.events.SignUpEvent;
 import com.vitweb.vitwebapi.application.inputs.user.CreateUserInput;
 import com.vitweb.vitwebapi.application.repositories.IRoleRepository;
 import com.vitweb.vitwebapi.application.repositories.IUserRepository;
@@ -13,7 +16,6 @@ import com.vitweb.vitwebapi.application.services.IAuthService;
 import com.vitweb.vitwebapi.application.services.ITokenService;
 import com.vitweb.vitwebapi.application.utils.JwtUtil;
 import com.vitweb.vitwebapi.application.utils.SendMailUtil;
-import com.vitweb.vitwebapi.configs.exceptions.InvalidException;
 import com.vitweb.vitwebapi.configs.exceptions.VsException;
 import com.vitweb.vitwebapi.domain.entities.Role;
 import com.vitweb.vitwebapi.domain.entities.User;
@@ -22,6 +24,10 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -47,41 +53,50 @@ public class AuthServiceImpl implements IAuthService {
   private final ITokenService tokenService;
   private final PasswordEncoder passwordEncoder;
   private final IRoleRepository roleRepository;
+  private final AuthenticationManager authenticationManager;
+  private final ApplicationEventPublisher publisher;
 
-  public AuthServiceImpl(IUserRepository userRepository, JwtUtil jwtUtil, ModelMapper modelMapper, ITokenService tokenService, PasswordEncoder passwordEncoder, IRoleRepository roleRepository) {
+
+  public AuthServiceImpl(IUserRepository userRepository, JwtUtil jwtUtil, ModelMapper modelMapper, ITokenService tokenService, PasswordEncoder passwordEncoder, IRoleRepository roleRepository, AuthenticationManager authenticationManager, ApplicationEventPublisher publisher) {
     this.userRepository = userRepository;
     this.jwtUtil = jwtUtil;
     this.modelMapper = modelMapper;
     this.tokenService = tokenService;
     this.passwordEncoder = passwordEncoder;
     this.roleRepository = roleRepository;
+    this.authenticationManager = authenticationManager;
+    this.publisher = publisher;
   }
 
   @Override
   public AuthenticationResponse login(AuthenticationRequest authenticationRequest) {
-    Optional<User> user = userRepository.findByEmail(authenticationRequest.getEmail());
-    checkUserExists(user);
+    Optional<User> oldUser = userRepository.findByEmail(authenticationRequest.getEmail());
+    checkUserExists(oldUser);
 
     // check user authentication
-    if(!user.get().getStatus()) {
+    if(!oldUser.get().getStatus()) {
       throw new VsException("User unconfirmed account!");
     }
 
-    if (!passwordEncoder.matches(authenticationRequest.getPassword(), user.get().getPassword())) {
-      throw new InvalidException(UserMessageConstant.INVALID_AUTHENTICATION_INVALID_PASSWORD,
-          DevMessageConstant.User.INVALID_PASSWORD);
+    try {
+      authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+          authenticationRequest.getEmail(), authenticationRequest.getPassword()
+      ));
+    } catch (BadCredentialsException e) {
+      throw new VsException("Incorrect username or password");
     }
 
-    return new AuthenticationResponse(jwtUtil.generateToken(user.get(), CommonConstant.FALSE), CommonConstant.BEARER_TOKEN,
-        jwtUtil.generateToken(user.get(), CommonConstant.TRUE));
+    return new AuthenticationResponse(jwtUtil.generateToken(oldUser.get(), CommonConstant.FALSE), CommonConstant.BEARER_TOKEN,
+        jwtUtil.generateToken(oldUser.get(), CommonConstant.TRUE));
   }
 
   @Override
-  public User signUp(CreateUserInput createUserInput) {
+  public User signUp(CreateUserInput createUserInput, HttpServletRequest request) {
     Optional<User> oldUser = userRepository.findByEmail(createUserInput.getEmail());
     if(oldUser.isPresent()) {
       throw new VsException("Email has already exists");
     }
+
     User user = modelMapper.map(createUserInput, User.class);
     user.setPassword(passwordEncoder.encode(createUserInput.getPassword()));
 
@@ -89,7 +104,13 @@ public class AuthServiceImpl implements IAuthService {
     user.setRoles(List.of(role));
     user.setAuthProvider(AuthenticationProvider.LOCAL);
 
-    return userRepository.save(user);
+    userRepository.save(user);
+    publisher.publishEvent(new SignUpEvent(
+        user,
+        applicationUrl(request)
+    ));
+
+    return user;
   }
 
   @Override
@@ -159,7 +180,15 @@ public class AuthServiceImpl implements IAuthService {
 
   private void checkUserExists(Optional<User> user) {
     if(user.isEmpty()) {
-      throw new VsException(UserMessageConstant.User.ERR_NOT_FOUND_BY_ID);
+      throw new VsException("User not found");
     }
+  }
+
+  private String applicationUrl(HttpServletRequest request) {
+    return "http://" +
+        request.getServerName() +
+        ":" +
+        request.getServerPort() +
+        request.getContextPath();
   }
 }
