@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,28 +25,20 @@ import javax.validation.Valid;
 public class AuthController {
 
     private final IAuthService authService;
-    private final ApplicationEventPublisher publisher;
 
-    public AuthController(IAuthService authService, ApplicationEventPublisher publisher) {
+    public AuthController(IAuthService authService) {
         this.authService = authService;
-        this.publisher = publisher;
     }
 
     @PostMapping(UrlConstant.Auth.LOGIN)
-    public ResponseEntity<?> login(@Valid @ModelAttribute AuthenticationRequest authenticationRequest) {
+    public ResponseEntity<?> login(@Valid @RequestBody AuthenticationRequest authenticationRequest) {
         return VsResponseUtil.ok(authService.login(authenticationRequest));
     }
 
     @PostMapping (UrlConstant.Auth.SIGNUP)
-    public ResponseEntity<?> signUp(@Valid @ModelAttribute CreateUserInput createUserInput,
+    public ResponseEntity<?> signUp(@Valid @RequestBody CreateUserInput createUserInput,
                                     HttpServletRequest request) {
-
-        User user = authService.signUp(createUserInput);
-        publisher.publishEvent(new SignUpEvent(
-                user,
-                applicationUrl(request)
-        ));
-        return VsResponseUtil.ok(user);
+        return VsResponseUtil.ok(authService.signUp(createUserInput, request));
     }
 
     @PostMapping(UrlConstant.Auth.REFRESH_TOKEN)

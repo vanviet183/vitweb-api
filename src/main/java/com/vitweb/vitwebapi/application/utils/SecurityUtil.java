@@ -11,7 +11,7 @@ public final class SecurityUtil {
 
   public static String getCurrentUserLogin() {
     RequestHeader requestHeader = BeanUtil.getBean(RequestHeader.class);
-    return requestHeader.getUUID();
+    return requestHeader.getUser();
   }
 
 }

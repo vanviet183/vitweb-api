@@ -2,7 +2,7 @@ package com.vitweb.vitwebapi.application.constants;
 
 public class AuthorityConstant {
 
-  public static final String CLAIM_UUID = "sub";
+  public static final String CLAIM_SUB = "sub";
   public static final String CLAIM_EMAIL = "emails";
   public static final String ANONYMOUS_USER = "ANONYMOUS";
   public static final String CLAIM_TYPE = "type";

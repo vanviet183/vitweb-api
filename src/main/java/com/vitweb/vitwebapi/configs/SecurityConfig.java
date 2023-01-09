@@ -49,12 +49,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   private static final String[] ADMIN_LIST_URLS = {
       "/api/v1/categories/**",
       "/api/v1/courses/**",
+      "/api/v1/users/**",
+      "/api/v1/lessons/**"
+  };
+
+  private static final String[] MENTOR_LIST_URLS = {
+      "/api/v1/categories/**",
+      "/api/v1/courses/**",
+      "/api/v1/users/**",
+      "/api/v1/lessons/**"
   };
 
   private static final String[] STUDENT_LIST_URLS = {
       "/api/v1/categories/**",
       "/api/v1/courses/**",
       "/api/v1/users/**",
+      "/api/v1/lessons/**"
   };
 
   @Bean
@@ -71,8 +81,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   protected void configure(HttpSecurity http) throws Exception {
     http.cors().configurationSource(request -> corsConfiguration())
         .and().csrf().disable()
-        .exceptionHandling().authenticationEntryPoint(unauthorizedHandler)  // handle các lỗi xác thực
-        .and()
+//        .exceptionHandling().authenticationEntryPoint(unauthorizedHandler)  // handle các lỗi xác thực
+//        .and()
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
         .authorizeRequests()

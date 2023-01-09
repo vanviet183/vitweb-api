@@ -17,7 +17,7 @@ public interface IAuthService {
 
   AuthenticationResponse login(AuthenticationRequest authenticationRequest);
 
-  User signUp(CreateUserInput createUserInput);
+  User signUp(CreateUserInput createUserInput, HttpServletRequest request);
 
   AuthenticationResponse refreshToken(HttpServletRequest request, HttpServletResponse response);
 

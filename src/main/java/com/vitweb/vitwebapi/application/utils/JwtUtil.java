@@ -73,12 +73,12 @@ public class JwtUtil {
     Map<String, Object> claim = new HashMap<>();
     claim.put(AuthorityConstant.CLAIM_TYPE, isRefreshToken ? AuthorityConstant.REFRESH_TOKEN : AuthorityConstant.TOKEN);
     if (isRefreshToken) {
-      return Jwts.builder().setClaims(claim).setSubject(user.getId())
+      return Jwts.builder().setClaims(claim).setSubject(user.getEmail())
           .setIssuedAt(new Date(System.currentTimeMillis()))
           .setExpiration(new Date(System.currentTimeMillis() + TIME_REFRESH_TOKEN_EXPIRATION))
           .signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
     }
-    return Jwts.builder().setClaims(claim).setSubject(user.getId())
+    return Jwts.builder().setClaims(claim).setSubject(user.getEmail())
         .setIssuedAt(new Date(System.currentTimeMillis()))
         .setExpiration(new Date(System.currentTimeMillis() + TIME_TOKEN_EXPIRATION))
         .signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();

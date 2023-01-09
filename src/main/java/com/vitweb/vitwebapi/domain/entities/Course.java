@@ -52,4 +52,7 @@ public class Course extends AbstractAuditingEntity {
   @JsonIgnore
   private List<Rate> rates;
 
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "course")
+  @JsonIgnore
+  private List<Lesson> lessons;
 }

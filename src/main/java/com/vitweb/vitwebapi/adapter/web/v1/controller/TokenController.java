@@ -6,6 +6,7 @@ import com.vitweb.vitwebapi.adapter.web.v1.transfer.parameter.auth.VerifyForgotP
 import com.vitweb.vitwebapi.application.constants.UrlConstant;
 import com.vitweb.vitwebapi.application.services.ITokenService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,7 +23,7 @@ public class TokenController {
     this.tokenService = tokenService;
   }
 
-  @PostMapping(UrlConstant.Token.VERIFY)
+  @GetMapping(UrlConstant.Token.VERIFY)
   public ResponseEntity<?> verifyToken(@PathVariable("token") String token) {
     return VsResponseUtil.ok(tokenService.verify(token));
   }
