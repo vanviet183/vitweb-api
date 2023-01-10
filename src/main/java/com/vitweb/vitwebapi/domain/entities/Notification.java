@@ -17,11 +17,6 @@ import javax.persistence.*;
 @Table(name = TableNameConstant.TBL_NOTIFICATION)
 public class Notification extends AbstractAuditingEntity {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id")
-  private Long id;
-
   private String content;
 
   private String path;

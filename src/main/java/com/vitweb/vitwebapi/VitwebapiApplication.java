@@ -34,9 +34,9 @@ public class VitwebapiApplication {
 			PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
 			if(roleRepository.count() == 0) {
-				roleRepository.save(new Role(null, RoleConstant.ROLE_ADMIN, RoleConstant.DES_ROLE_ADMIN));
-				roleRepository.save(new Role(null, RoleConstant.ROLE_MENTOR, RoleConstant.DES_ROLE_MENTOR));
-				roleRepository.save(new Role(null,RoleConstant.ROLE_STUDENT, RoleConstant.DES_ROLE_STUDENT));
+				roleRepository.save(new Role(RoleConstant.ROLE_ADMIN, RoleConstant.DES_ROLE_ADMIN));
+				roleRepository.save(new Role(RoleConstant.ROLE_MENTOR, RoleConstant.DES_ROLE_MENTOR));
+				roleRepository.save(new Role(RoleConstant.ROLE_STUDENT, RoleConstant.DES_ROLE_STUDENT));
 			}
 
 			if (userRepository.count() == 0) {

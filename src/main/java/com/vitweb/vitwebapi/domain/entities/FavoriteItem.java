@@ -18,11 +18,6 @@ import javax.persistence.*;
 @Table(name = TableNameConstant.TBL_FAVORITE_ITEM)
 public class FavoriteItem extends AbstractAuditingEntity {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id")
-  private Long id;
-
   @Enumerated(EnumType.STRING)
   private EFavorite type;
 

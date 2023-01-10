@@ -12,7 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 @AllArgsConstructor
 public class ChangeAvatarInput {
 
-  private String id;
+  private Long id;
 
   private MultipartFile file;
 }

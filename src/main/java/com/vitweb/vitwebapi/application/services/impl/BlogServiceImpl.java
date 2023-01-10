@@ -16,10 +16,12 @@ import com.vitweb.vitwebapi.configs.exceptions.VsException;
 import com.vitweb.vitwebapi.domain.entities.Blog;
 import com.vitweb.vitwebapi.domain.entities.Category;
 import com.vitweb.vitwebapi.domain.entities.Course;
+import com.vitweb.vitwebapi.domain.entities.Media;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -49,6 +51,7 @@ public class BlogServiceImpl implements IBlogService {
     return oldBlog.get();
   }
 
+  @Transactional
   @Override
   public Blog createBlog(CreateBlogInput createBlogInput) {
     Optional<Category> oldCategory = categoryRepository.findById(createBlogInput.getIdCategory());
@@ -59,15 +62,20 @@ public class BlogServiceImpl implements IBlogService {
     String result = slugify.slugify(createBlogInput.getSubject());
     newBlog.setSlug(result);
 
-    JSONObject json = new JSONObject();
+    List<Media> medias = new ArrayList<>();
     List<MultipartFile> files = createBlogInput.getFiles();
     files.forEach(item -> {
-      json.put("path", CloudinaryUtil.getUrlFromFile(item));
+      Media media = new Media();
+      media.setPath(CloudinaryUtil.getUrlFromFile(item));
+      media.setBlog(newBlog);
+      medias.add(media);
     });
-    newBlog.setImages(json.toJSONString());
+    newBlog.setMedias(medias);
 
     return blogRepository.save(newBlog);
   }
+
+
 
   @Override
   public Blog updateBlog(UpdateBlogInput updateBlogInput) {

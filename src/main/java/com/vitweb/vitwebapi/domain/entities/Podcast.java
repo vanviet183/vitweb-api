@@ -19,11 +19,6 @@ import java.util.List;
 @Table(name = TableNameConstant.TBL_PODCAST)
 public class Podcast extends AbstractAuditingEntity {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id")
-  private Long id;
-
   private String path;
 
   private String name;

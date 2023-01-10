@@ -17,6 +17,11 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 public abstract class AbstractAuditingEntity {
 
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id")
+  private Long id;
+
   @Column(name = "active_flag")
   private Boolean activeFlag = Boolean.TRUE;
 

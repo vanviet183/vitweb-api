@@ -21,9 +21,6 @@ import java.util.UUID;
 @NoArgsConstructor
 public class User extends AbstractAuditingEntity {
 
-  @Id
-  private String id = UUID.randomUUID().toString();
-
   private String name;
 
   private String email;
@@ -50,7 +47,7 @@ public class User extends AbstractAuditingEntity {
 
   private Double money = 0.0;
 
-  @ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+  @ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
   @JoinTable(name = "user_roles",
       joinColumns = @JoinColumn(name = "user_id"),
       inverseJoinColumns = @JoinColumn(name = "role_id"))
@@ -83,6 +80,14 @@ public class User extends AbstractAuditingEntity {
   @JsonIgnore
   @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   private List<Notification> notifications;
+
+  @JoinTable(name = "user_chat_room",
+      joinColumns = @JoinColumn(name = "user_id"),
+      inverseJoinColumns = @JoinColumn(name = "chat_room_id"),
+      foreignKey = @ForeignKey(name = "FK_USER_CHATROOM"))
+  @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  @JsonIgnore
+  private List<ChatRoom> chatRooms;
 
   // list podcast created by user
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
@@ -122,6 +127,10 @@ public class User extends AbstractAuditingEntity {
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
   @JsonIgnore
   private List<Post> posts;
+
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "sender")
+  @JsonIgnore
+  private List<Message> messages;
 
   @Enumerated(EnumType.STRING)
   private AuthenticationProvider authProvider;

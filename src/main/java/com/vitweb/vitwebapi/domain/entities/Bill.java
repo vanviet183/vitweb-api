@@ -21,11 +21,6 @@ import javax.persistence.*;
 })
 public class Bill extends AbstractAuditingEntity {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id")
-  private Long id;
-
   private Double discount;
 
   private String totalMoney;

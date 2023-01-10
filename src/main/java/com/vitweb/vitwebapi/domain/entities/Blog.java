@@ -21,28 +21,26 @@ import java.util.List;
 @Table(name = TableNameConstant.TBL_BLOG)
 public class Blog extends AbstractAuditingEntity {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id")
-  private Long id;
-
-  private String subject;
+  private String name;
 
   private String slug;
 
   private String content;
 
-  private String images;
-
   private Long amountReader;
 
-  @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
-  private List<Category> categories;
-
-  // list favorite item of user
-  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "blog")
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "blog")
   @JsonIgnore
-  private List<FavoriteItem> favoriteItems;
+  private List<Media> medias;
+
+  @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+  @JsonIgnore
+  @JoinTable(name = "blog_category",
+      joinColumns = @JoinColumn(name = "blog_id", referencedColumnName = "id"),
+      inverseJoinColumns = @JoinColumn(name = "category_id", referencedColumnName = "id",
+          foreignKey = @ForeignKey(name = "FK_BLOG_CATEGORY"))
+  )
+  private List<Category> categories;
 
   // list comment of blog
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "blog")

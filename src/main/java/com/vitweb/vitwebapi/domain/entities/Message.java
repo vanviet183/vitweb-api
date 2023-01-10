@@ -1,6 +1,6 @@
 package com.vitweb.vitwebapi.domain.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.vitweb.vitwebapi.adapter.web.base.EMessage;
 import com.vitweb.vitwebapi.application.constants.TableNameConstant;
 import com.vitweb.vitwebapi.domain.entities.base.AbstractAuditingEntity;
 import lombok.AllArgsConstructor;
@@ -10,27 +10,25 @@ import lombok.Setter;
 import org.hibernate.annotations.Nationalized;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = TableNameConstant.TBL_HELP)
-public class Help extends AbstractAuditingEntity {
-
-  @Nationalized
-  private String fullName;
-
-  @Email
-  private String email;
+@Table(name = TableNameConstant.TBL_MESSAGE)
+public class Message extends AbstractAuditingEntity {
 
   @Nationalized
   private String content;
 
-  @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
-  @JsonIgnore
-  private User user;
+  private Boolean isRead = false;
 
+  private EMessage type;
+
+  @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+  private ChatRoom chatRoom;
+
+  @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+  private User sender;
 }

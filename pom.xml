@@ -15,6 +15,7 @@
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>11</java.version>
+		<netty-socketio.version>1.7.19</netty-socketio.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -36,6 +37,13 @@
 			<groupId>com.mysql</groupId>
 			<artifactId>mysql-connector-j</artifactId>
 			<scope>runtime</scope>
+		</dependency>
+
+		<!--    SocketIO   -->
+		<dependency>
+			<groupId>com.corundumstudio.socketio</groupId>
+			<artifactId>netty-socketio</artifactId>
+			<version>${netty-socketio.version}</version>
 		</dependency>
 
 		<!--    Send mail    -->

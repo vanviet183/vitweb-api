@@ -1,5 +1,7 @@
 package com.vitweb.vitwebapi.application.constants;
 
+import java.util.regex.Pattern;
+
 public class CommonConstant {
 
   public static final String PRODUCT_ENV = "prod";
@@ -21,5 +23,9 @@ public class CommonConstant {
   public static final int PAGE_SIZE_DEFAULT = 50;
   public static final String SORT_TYPE_ASC = "ASC";
   public static final String SORT_TYPE_DESC = "DESC";
+
+  //Pattern
+  public static final Pattern PATTERN_IMAGE = Pattern.compile("([^\\s]+(\\.(?i)(jpe?g|gif|png))$)");
+  public static final Pattern PATTERN_VIDEO = Pattern.compile("([^\\s]+(\\.(?i)(mp4))$)");
 
 }

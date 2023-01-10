@@ -17,11 +17,6 @@ import javax.persistence.*;
 @Table(name = TableNameConstant.TBL_VOUCHER)
 public class Voucher extends AbstractAuditingEntity {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id")
-  private Long id;
-
   private Double percent;
 
   private String name;

@@ -19,11 +19,6 @@ import java.util.Date;
 @Table(name = TableNameConstant.TBL_TOKEN)
 public class Token extends AbstractAuditingEntity {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id")
-  private Long id;
-
   // Expiration time 10 minutes
   private static final int EXPIRATION_TIME = 24 * 60;
 

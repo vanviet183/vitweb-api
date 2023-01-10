@@ -11,7 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class UpdateUserInput {
 
-  private String id;
+  private Long id;
 
   private String name;
 

@@ -35,7 +35,7 @@ public class UserServiceImpl implements IUserService {
   }
 
   @Override
-  public User getUserById(String id) {
+  public User getUserById(Long id) {
     Optional<User> user = userRepository.findById(id);
     checkUserExists(user);
     return user.get();
@@ -59,7 +59,7 @@ public class UserServiceImpl implements IUserService {
   }
 
   @Override
-  public RequestResponse deleteById(String id) {
+  public RequestResponse deleteById(Long id) {
     Optional<User> user = userRepository.findById(id);
     checkUserExists(user);
     userRepository.deleteById(id);
@@ -67,8 +67,8 @@ public class UserServiceImpl implements IUserService {
   }
 
   @Override
-  public RequestResponse follow(String idFollow) {
-    Optional<User> oldUser = userRepository.findById(SecurityUtil.getCurrentUserLogin());
+  public RequestResponse follow(Long idFollow) {
+    Optional<User> oldUser = userRepository.findByEmail(SecurityUtil.getCurrentUserLogin());
     checkUserExists(oldUser);
 
     Optional<User> userFollow = userRepository.findById(idFollow);
@@ -83,8 +83,8 @@ public class UserServiceImpl implements IUserService {
   }
 
   @Override
-  public RequestResponse unfollow(String idFollow) {
-    Optional<User> oldUser = userRepository.findById(SecurityUtil.getCurrentUserLogin());
+  public RequestResponse unfollow(Long idFollow) {
+    Optional<User> oldUser = userRepository.findByEmail(SecurityUtil.getCurrentUserLogin());
     checkUserExists(oldUser);
 
     Optional<User> userFollow = userRepository.findById(idFollow);
