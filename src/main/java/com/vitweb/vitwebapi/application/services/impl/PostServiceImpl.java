@@ -13,12 +13,14 @@ import com.vitweb.vitwebapi.application.services.IPostService;
 import com.vitweb.vitwebapi.application.utils.CloudinaryUtil;
 import com.vitweb.vitwebapi.application.utils.SecurityUtil;
 import com.vitweb.vitwebapi.configs.exceptions.VsException;
+import com.vitweb.vitwebapi.domain.entities.Media;
 import com.vitweb.vitwebapi.domain.entities.Post;
 import com.vitweb.vitwebapi.domain.entities.User;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,18 +51,21 @@ public class PostServiceImpl implements IPostService {
 
   @Override
   public Post createPost(CreatePostInput createPostInput) {
-    Optional<User> oldUser = userRepository.findById(SecurityUtil.getCurrentUserLogin());
+    Optional<User> oldUser = userRepository.findByEmail(SecurityUtil.getCurrentUserLogin());
     checkUserExists(oldUser);
 
     Post newPost = modelMapper.map(createPostInput, Post.class);
     newPost.setUser(oldUser.get());
 
-    JSONObject json = new JSONObject();
+    List<Media> medias = new ArrayList<>();
     List<MultipartFile> files = createPostInput.getFiles();
     files.forEach(item -> {
-      json.put("path", CloudinaryUtil.getUrlFromFile(item));
+      Media media = new Media();
+      media.setPath(CloudinaryUtil.getUrlFromFile(item));
+      media.setPost(newPost);
+      medias.add(media);
     });
-    newPost.setImages(json.toJSONString());
+    newPost.setMedias(medias);
 
     return postRepository.save(newPost);
   }

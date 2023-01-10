@@ -13,15 +13,15 @@ public interface IUserService {
 
   List<User> getAll();
 
-  User getUserById(String id);
+  User getUserById(Long id);
 
   User updateUser(UpdateUserInput updateUserInput);
 
   RequestResponse changeAvatar(ChangeAvatarInput changeAvatarInput);
 
-  RequestResponse follow(String idFollow);
+  RequestResponse follow(Long idFollow);
 
-  RequestResponse unfollow(String idFollow);
+  RequestResponse unfollow(Long idFollow);
 
-  RequestResponse deleteById(String id);
+  RequestResponse deleteById(Long id);
 }

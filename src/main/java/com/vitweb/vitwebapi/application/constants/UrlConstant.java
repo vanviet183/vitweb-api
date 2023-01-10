@@ -317,4 +317,15 @@ public class UrlConstant {
     public static final String LOGOUT = PRE_FIX + "/logout/{id}";
   }
 
+  public static class ChatRoom {
+    private static final String PRE_FIX = "/rooms";
+    public static final String LIST = PRE_FIX;
+    public static final String GET = PRE_FIX + "/{id}";
+    public static final String SEARCH = PRE_FIX + "/search";
+    public static final String CREATE = PRE_FIX + "/create";
+
+    public ChatRoom() {
+    }
+
+  }
 }

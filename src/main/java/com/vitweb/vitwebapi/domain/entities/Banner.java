@@ -17,11 +17,6 @@ import javax.persistence.*;
 @Table(name = TableNameConstant.TBL_BANNER)
 public class Banner extends AbstractAuditingEntity {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id")
-  private Long id;
-
   private String name;
 
   private String description;

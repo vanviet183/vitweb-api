@@ -20,19 +20,14 @@ import java.util.List;
 @Table(name = TableNameConstant.TBL_POST)
 public class Post extends AbstractAuditingEntity {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id")
-  private Long id;
-
   private String content;
 
   @Enumerated(EnumType.STRING)
   private EStatus status;
 
-  private String images;
-
-  private String videos;
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "post")
+  @JsonIgnore
+  private List<Media> medias;
 
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "post")
   @JsonIgnore

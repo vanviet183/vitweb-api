@@ -21,11 +21,6 @@ import java.util.List;
 @Table(name = TableNameConstant.TBL_CATEGORY)
 public class Category extends AbstractAuditingEntity {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id")
-  private Long id;
-
   @Nationalized
   private String name;
 
@@ -39,7 +34,7 @@ public class Category extends AbstractAuditingEntity {
       foreignKey = @ForeignKey(name = "FK_CATEGORY_BLOG"))
   @JsonIgnore
   @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-  private List<Blog> blogs = new ArrayList<>();
+  private List<Blog> blogs;
 
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "category")
   @JsonIgnore

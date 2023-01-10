@@ -26,7 +26,7 @@ public class UserController {
   }
 
   @GetMapping(UrlConstant.User.GET)
-  public ResponseEntity<?> getUserById(@PathVariable("id") String id) {
+  public ResponseEntity<?> getUserById(@PathVariable("id") Long id) {
     return VsResponseUtil.ok(userService.getUserById(id));
   }
 
@@ -41,17 +41,17 @@ public class UserController {
   }
 
   @PostMapping(UrlConstant.User.FOLLOW)
-  public ResponseEntity<?> follow(@Valid @PathVariable("idFollow") String idFollow) {
+  public ResponseEntity<?> follow(@Valid @PathVariable("idFollow") Long idFollow) {
     return VsResponseUtil.ok(userService.follow(idFollow));
   }
 
   @PostMapping(UrlConstant.User.UNFOLLOW)
-  public ResponseEntity<?> unfollow(@Valid @PathVariable("idFollow") String idFollow) {
+  public ResponseEntity<?> unfollow(@Valid @PathVariable("idFollow") Long idFollow) {
     return VsResponseUtil.ok(userService.unfollow(idFollow));
   }
 
   @DeleteMapping(UrlConstant.User.DELETE)
-  public ResponseEntity<?> deleteUser(@PathVariable("id") String id) {
+  public ResponseEntity<?> deleteUser(@PathVariable("id") Long id) {
     return VsResponseUtil.ok(userService.deleteById(id));
   }
   

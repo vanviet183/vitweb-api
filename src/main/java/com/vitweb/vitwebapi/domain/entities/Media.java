@@ -1,7 +1,7 @@
 package com.vitweb.vitwebapi.domain.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.vitweb.vitwebapi.adapter.web.base.ERate;
+import com.vitweb.vitwebapi.adapter.web.base.EMedia;
 import com.vitweb.vitwebapi.application.constants.TableNameConstant;
 import com.vitweb.vitwebapi.domain.entities.base.AbstractAuditingEntity;
 import lombok.AllArgsConstructor;
@@ -16,21 +16,24 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = TableNameConstant.TBL_RATE, uniqueConstraints = {
-    @UniqueConstraint(columnNames = "user_id"),
-    @UniqueConstraint(columnNames = "course_id")
-})
-public class Rate extends AbstractAuditingEntity {
+@Table(name = TableNameConstant.TBL_MEDIA)
+public class Media extends AbstractAuditingEntity {
 
-  private ERate value;
-
-  private String content;
+  private String path;
 
   @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
   @JsonIgnore
-  private Course course;
+  private Blog blog;
 
   @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
   @JsonIgnore
-  private User user;
+  private Post post;
+
+  @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+  @JsonIgnore
+  private Lesson lesson;
+
+  @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+  @JsonIgnore
+  private ChatRoom chatRoom;
 }

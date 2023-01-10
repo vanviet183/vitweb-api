@@ -21,11 +21,6 @@ import javax.persistence.*;
 })
 public class UserLesson extends AbstractAuditingEntity {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id")
-  private Long id;
-
   private Double mark;
 
   private Boolean attendance;

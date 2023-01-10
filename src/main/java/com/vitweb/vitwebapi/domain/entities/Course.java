@@ -20,11 +20,6 @@ import java.util.List;
 @Table(name = TableNameConstant.TBL_COURSE)
 public class Course extends AbstractAuditingEntity {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id")
-  private Long id;
-
   @Nationalized
   private String name;
 

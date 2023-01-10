@@ -1,37 +1,31 @@
 package com.vitweb.vitwebapi.domain.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.vitweb.vitwebapi.adapter.web.base.ERoom;
 import com.vitweb.vitwebapi.application.constants.TableNameConstant;
 import com.vitweb.vitwebapi.domain.entities.base.AbstractAuditingEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Nationalized;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = TableNameConstant.TBL_IMAGE)
-public class Image extends AbstractAuditingEntity {
+@Table(name = TableNameConstant.TBL_ROOM)
+public class ChatRoom extends AbstractAuditingEntity {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id")
-  private Long id;
-
-  private String path;
-
-  private Integer type;
-
-  @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "chatRoom")
   @JsonIgnore
-  private Blog blog;
+  private List<Message> messages;
 
-  @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "chatRoom")
   @JsonIgnore
-  private Comment comment;
+  private List<Media> medias;
 }

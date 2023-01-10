@@ -56,7 +56,7 @@ public class CommentServiceImpl implements ICommentService {
   public Comment createComment(CreateCommentInput createCommentInput) {
     Optional<Comment> oldComment = commentRepository.findById(createCommentInput.getIdParent());
     checkCommentExists(oldComment, createCommentInput.getIdParent());
-    Optional<User> oldUser = userRepository.findById(SecurityUtil.getCurrentUserLogin());
+    Optional<User> oldUser = userRepository.findByEmail(SecurityUtil.getCurrentUserLogin());
     checkUserExists(oldUser, SecurityUtil.getCurrentUserLogin());
 
     Comment newComment = modelMapper.map(createCommentInput, Comment.class);
@@ -79,7 +79,7 @@ public class CommentServiceImpl implements ICommentService {
   public Comment createCommentBlog(CreateCommentBlogInput createCommentBlogInput) {
     Optional<Blog> oldBlog = blogRepository.findById(createCommentBlogInput.getIdBlog());
     checkBlogExists(oldBlog, createCommentBlogInput.getIdBlog());
-    Optional<User> oldUser = userRepository.findById(SecurityUtil.getCurrentUserLogin());
+    Optional<User> oldUser = userRepository.findByEmail(SecurityUtil.getCurrentUserLogin());
     checkUserExists(oldUser, SecurityUtil.getCurrentUserLogin());
 
     Comment newComment = modelMapper.map(createCommentBlogInput, Comment.class);
@@ -93,7 +93,7 @@ public class CommentServiceImpl implements ICommentService {
   public Comment createCommentPost(CreateCommentPostInput createCommentPostInput) {
     Optional<Post> oldPost = postRepository.findById(createCommentPostInput.getIdPost());
     checkPostExists(oldPost, createCommentPostInput.getIdPost());
-    Optional<User> oldUser = userRepository.findById(SecurityUtil.getCurrentUserLogin());
+    Optional<User> oldUser = userRepository.findByEmail(SecurityUtil.getCurrentUserLogin());
     checkUserExists(oldUser, SecurityUtil.getCurrentUserLogin());
 
     Comment newComment = modelMapper.map(createCommentPostInput, Comment.class);
@@ -107,7 +107,7 @@ public class CommentServiceImpl implements ICommentService {
   public Comment createCommentLesson(CreateCommentLessonInput createCommentLessonInput) {
     Optional<Lesson> oldLesson = lessonRepository.findById(createCommentLessonInput.getIdLesson());
     checkLessonExists(oldLesson, createCommentLessonInput.getIdLesson());
-    Optional<User> oldUser = userRepository.findById(SecurityUtil.getCurrentUserLogin());
+    Optional<User> oldUser = userRepository.findByEmail(SecurityUtil.getCurrentUserLogin());
     checkUserExists(oldUser, SecurityUtil.getCurrentUserLogin());
 
     Comment newComment = modelMapper.map(createCommentLessonInput, Comment.class);
@@ -171,9 +171,9 @@ public class CommentServiceImpl implements ICommentService {
   }
 
   public void setImageComment(Comment comment, MultipartFile multipartFile) {
-    if(comment.getImageUrl() != null) {
-      CloudinaryUtil.removeFileFromUrl(comment.getImageUrl());
+    if(comment.getMediaUrl() != null) {
+      CloudinaryUtil.removeFileFromUrl(comment.getMediaUrl());
     }
-    comment.setImageUrl(CloudinaryUtil.getUrlFromFile(multipartFile));
+    comment.setMediaUrl(CloudinaryUtil.getUrlFromFile(multipartFile));
   }
 }

@@ -19,11 +19,6 @@ import java.util.List;
 @Table(name = TableNameConstant.TBL_LESSON)
 public class Lesson extends AbstractAuditingEntity {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id")
-  private Long id;
-
   private String name;
 
   private String slug;
@@ -31,6 +26,10 @@ public class Lesson extends AbstractAuditingEntity {
   private String path;
 
   private String content;
+
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "lesson")
+  @JsonIgnore
+  private List<Media> medias;
 
   // list lesson learned by users
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "lesson")

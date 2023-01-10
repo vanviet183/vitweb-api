@@ -21,14 +21,9 @@ import java.util.List;
 @Table(name = TableNameConstant.TBL_COMMENT)
 public class Comment extends AbstractAuditingEntity {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id")
-  private Long id;
-
   private String content;
 
-  private String imageUrl;
+  private String mediaUrl;
 
   @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
   @JsonIgnore
@@ -54,6 +49,5 @@ public class Comment extends AbstractAuditingEntity {
 
   // List comment children
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "parentComment")
-  private List<Comment> childrenComments = new ArrayList<>();
-
+  private List<Comment> childrenComments;
 }
