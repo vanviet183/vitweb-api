@@ -322,7 +322,8 @@ public class UrlConstant {
     public static final String LIST = PRE_FIX;
     public static final String GET = PRE_FIX + "/{id}";
     public static final String SEARCH = PRE_FIX + "/search";
-    public static final String CREATE = PRE_FIX + "/create";
+    public static final String CREATE = PRE_FIX;
+    public static final String DELETE = PRE_FIX + "/{id}";
 
     public ChatRoom() {
     }
