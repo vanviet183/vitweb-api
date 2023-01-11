@@ -21,9 +21,16 @@ import java.util.List;
 @Table(name = TableNameConstant.TBL_ROOM)
 public class ChatRoom extends AbstractAuditingEntity {
 
+  @Nationalized
+  private String nickname;
+
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "chatRoom")
   @JsonIgnore
   private List<Message> messages;
+
+  @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy = "chatRooms")
+  @JsonIgnore
+  private List<User> users;
 
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "chatRoom")
   @JsonIgnore
