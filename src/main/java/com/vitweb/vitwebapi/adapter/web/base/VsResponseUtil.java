@@ -4,6 +4,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.util.List;
+
 public class VsResponseUtil {
 
   public static ResponseEntity<RestData<?>> ok(Object data) {
@@ -33,5 +35,12 @@ public class VsResponseUtil {
     RestData<?> response = RestData.error(userMessage);
     return new ResponseEntity<>(response, status);
   }
+
+  public static ResponseEntity<RestData<?>> error(HttpStatus status, Object data) {
+    RestData<?> response = new RestData<>(data);
+    return new ResponseEntity<>(response, status);
+  }
+
+
 
 }

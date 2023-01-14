@@ -15,6 +15,8 @@ public interface IUserService {
 
   User getUserById(Long id);
 
+  User getUserByIdName(String idName);
+
   User updateUser(UpdateUserInput updateUserInput);
 
   RequestResponse changeAvatar(ChangeAvatarInput changeAvatarInput);

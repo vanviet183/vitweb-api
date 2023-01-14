@@ -23,6 +23,8 @@ public class User extends AbstractAuditingEntity {
 
   private String name;
 
+  private String idName;
+
   private String email;
 
   private String password;
@@ -47,7 +49,7 @@ public class User extends AbstractAuditingEntity {
 
   private Double money = 0.0;
 
-  @ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+  @ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
   @JoinTable(name = "user_roles",
       joinColumns = @JoinColumn(name = "user_id"),
       inverseJoinColumns = @JoinColumn(name = "role_id"))
@@ -80,14 +82,6 @@ public class User extends AbstractAuditingEntity {
   @JsonIgnore
   @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   private List<Notification> notifications;
-
-  @JoinTable(name = "user_chat_room",
-      joinColumns = @JoinColumn(name = "user_id"),
-      inverseJoinColumns = @JoinColumn(name = "chat_room_id"),
-      foreignKey = @ForeignKey(name = "FK_USER_CHATROOM"))
-  @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-  @JsonIgnore
-  private List<ChatRoom> chatRooms;
 
   // list podcast created by user
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")

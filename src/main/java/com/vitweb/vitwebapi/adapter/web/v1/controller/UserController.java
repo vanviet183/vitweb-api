@@ -30,6 +30,11 @@ public class UserController {
     return VsResponseUtil.ok(userService.getUserById(id));
   }
 
+  @GetMapping(UrlConstant.User.GET_ID_NAME)
+  public ResponseEntity<?> getUserByIdName(@PathVariable("idName") String idName) {
+    return VsResponseUtil.ok(userService.getUserByIdName(idName));
+  }
+
   @PatchMapping(UrlConstant.User.UPDATE)
   public ResponseEntity<?> updateUser(@ModelAttribute UpdateUserInput updateUserInput) {
     return VsResponseUtil.ok(userService.updateUser(updateUserInput));

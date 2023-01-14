@@ -27,7 +27,7 @@ public class Lesson extends AbstractAuditingEntity {
 
   private String content;
 
-  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "lesson")
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "lesson")
   @JsonIgnore
   private List<Media> medias;
 

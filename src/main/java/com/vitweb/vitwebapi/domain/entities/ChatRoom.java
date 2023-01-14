@@ -28,7 +28,11 @@ public class ChatRoom extends AbstractAuditingEntity {
   @JsonIgnore
   private List<Message> messages;
 
-  @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy = "chatRooms")
+  @JoinTable(name = "chat_room_users",
+      joinColumns = @JoinColumn(name = "chat_room_id"),
+      inverseJoinColumns = @JoinColumn(name = "user_id"),
+      foreignKey = @ForeignKey(name = "FK_CHATROOM_USER"))
+  @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   @JsonIgnore
   private List<User> users;
 

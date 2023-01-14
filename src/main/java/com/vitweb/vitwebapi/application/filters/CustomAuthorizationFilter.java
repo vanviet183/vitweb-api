@@ -3,7 +3,6 @@ package com.vitweb.vitwebapi.application.filters;
 import com.vitweb.vitwebapi.application.services.MyUserDetailsService;
 import com.vitweb.vitwebapi.application.utils.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -33,26 +32,22 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
     // kiem tra xem co phai thong tin dang nhap khong
-    if(request.getServletPath().equals("/api/v1/auth/login") || request.getServletPath().equals("/api/v1/auth/refresh-token")) {
-      filterChain.doFilter(request, response);
-    } else {
-      try {
-        String token = getTokenFromRequest(request);
-        if (token != null && jwtUtil.validateJwtToken(token)) {
-          String uuid = jwtUtil.getUUIDFromJwtToken(token);
-          UserDetails userDetails = userDetailsService.loadUserByUsername(uuid);
-          UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-              userDetails, null, userDetails.getAuthorities()
-          );
-          authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-          SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-        }
-        filterChain.doFilter(request, response);
-      } catch (Exception ex) {
-        response.setHeader("error", ex.getMessage());
-        response.sendError(HttpStatus.FORBIDDEN.value());
+    try {
+      String token = getTokenFromRequest(request);
+      if (token != null && jwtUtil.validateJwtToken(token)) {
+        String email = jwtUtil.getEmailFromJwtToken(token);
+        UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+            userDetails, null, userDetails.getAuthorities()
+        );
+        authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
       }
+    } catch (Exception ex) {
+      response.setHeader("error", ex.getMessage());
+      logger.error(ex.getMessage());
     }
+    filterChain.doFilter(request, response);
   }
 
   private String getTokenFromRequest(HttpServletRequest request) {

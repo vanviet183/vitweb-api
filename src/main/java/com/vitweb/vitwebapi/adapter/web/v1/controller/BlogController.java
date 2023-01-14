@@ -28,6 +28,11 @@ public class BlogController {
     return VsResponseUtil.ok(blogService.getBlogById(id));
   }
 
+  @GetMapping(UrlConstant.Blog.FIND_BY_NAME)
+  public ResponseEntity<?> findBlogByName(@PathVariable("name") String name) {
+    return VsResponseUtil.ok(blogService.findBlogByName(name));
+  }
+
   @PostMapping(UrlConstant.Blog.CREATE)
   public ResponseEntity<?> createBlog(@RequestBody CreateBlogInput createBlogInput) {
     return VsResponseUtil.ok(blogService.createBlog(createBlogInput));

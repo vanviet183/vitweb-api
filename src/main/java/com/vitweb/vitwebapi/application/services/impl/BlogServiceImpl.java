@@ -51,6 +51,16 @@ public class BlogServiceImpl implements IBlogService {
     return oldBlog.get();
   }
 
+  @Override
+  public Blog findBlogByName(String name) {
+    Slugify slugify = new Slugify();
+    String slug = slugify.slugify(name);
+    Optional<Blog> oldBlog = blogRepository.findBySlug(slug);
+    checkBlogExists(oldBlog);
+
+    return oldBlog.get();
+  }
+
   @Transactional
   @Override
   public Blog createBlog(CreateBlogInput createBlogInput) {
@@ -111,6 +121,12 @@ public class BlogServiceImpl implements IBlogService {
     if(Blog.isEmpty()) {
       throw new VsException(UserMessageConstant.ERR_EXCEPTION_GENERAL,
           String.format(DevMessageConstant.Common.NOT_FOUND_OBJECT_BY_ID, "category", id));
+    }
+  }
+
+  private void checkBlogExists(Optional<Blog> Blog) {
+    if(Blog.isEmpty()) {
+      throw new VsException("Blog not found");
     }
   }
 }
