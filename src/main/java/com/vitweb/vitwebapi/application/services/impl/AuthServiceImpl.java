@@ -118,9 +118,9 @@ public class AuthServiceImpl implements IAuthService {
     try {
       String refreshToken = getTokenFromRequest(request);
       if (refreshToken != null && jwtUtil.validateJwtToken(refreshToken)) {
-        String uuid = jwtUtil.getUUIDFromJwtToken(refreshToken);
+        String email = jwtUtil.getEmailFromJwtToken(refreshToken);
         String accessToken = Jwts.builder()
-            .setSubject(uuid)
+            .setSubject(email)
             .setIssuedAt(new Date())
             .setExpiration(new Date(System.currentTimeMillis() + TIME_TOKEN_EXPIRATION))
             .signWith(SignatureAlgorithm.HS256, SECRET_KEY)

@@ -50,6 +50,13 @@ public class UserServiceImpl implements IUserService {
   }
 
   @Override
+  public User getUserByIdName(String idName) {
+    Optional<User> oldUser = userRepository.findByIdName(idName);
+    checkUserExists(oldUser);
+    return oldUser.get();
+  }
+
+  @Override
   public RequestResponse changeAvatar(ChangeAvatarInput changeAvatarInput) {
     Optional<User> oldUser = userRepository.findById(changeAvatarInput.getId());
     checkUserExists(oldUser);

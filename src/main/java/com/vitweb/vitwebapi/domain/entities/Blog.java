@@ -29,7 +29,7 @@ public class Blog extends AbstractAuditingEntity {
 
   private Long amountReader;
 
-  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "blog")
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "blog")
   @JsonIgnore
   private List<Media> medias;
 

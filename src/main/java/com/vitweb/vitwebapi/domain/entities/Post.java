@@ -25,7 +25,7 @@ public class Post extends AbstractAuditingEntity {
   @Enumerated(EnumType.STRING)
   private EStatus status;
 
-  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "post")
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "post")
   @JsonIgnore
   private List<Media> medias;
 

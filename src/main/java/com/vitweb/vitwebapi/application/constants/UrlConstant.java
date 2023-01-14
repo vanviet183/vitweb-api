@@ -32,6 +32,7 @@ public class UrlConstant {
     public static final String PREFIX = "/blogs";
     public static final String LIST = PREFIX;
     public static final String GET = PREFIX + "/{id}";
+    public static final String FIND_BY_NAME = PREFIX + "/name/{name}";
     public static final String CREATE = PREFIX;
     public static final String UPDATE = PREFIX;
     public static final String DELETE = PREFIX + "/{id}";
@@ -221,6 +222,7 @@ public class UrlConstant {
     public static final String PREFIX = "/users";
     public static final String LIST = PREFIX;
     public static final String GET = PREFIX + "/{id}";
+    public static final String GET_ID_NAME = PREFIX + "/{idName}";
     public static final String CHANGE_AVATAR = PREFIX + "/change-avatar/{id}";
     public static final String FOLLOW = PREFIX + "/follow/{idFollow}";
     public static final String UNFOLLOW = PREFIX + "/unfollow/{idFollow}";

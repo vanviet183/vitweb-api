@@ -14,6 +14,8 @@ public interface IBlogService {
 
   Blog getBlogById(Long id);
 
+  Blog findBlogByName(String name);
+
   Blog createBlog(CreateBlogInput createBlogInput);
 
   Blog updateBlog(UpdateBlogInput updateBlogInput);

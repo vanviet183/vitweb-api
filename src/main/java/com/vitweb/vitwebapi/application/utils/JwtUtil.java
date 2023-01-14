@@ -43,7 +43,7 @@ public class JwtUtil {
   }
 
   // Verifier and decode token
-  public String getUUIDFromJwtToken(String token) {
+  public String getEmailFromJwtToken(String token) {
     Claims claims = getClaimsFromJwtToken(token);
     if (claims != null && isTokenExpired(claims)) {
       return claims.getSubject();
