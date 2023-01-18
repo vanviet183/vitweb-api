@@ -35,6 +35,23 @@ public class UserServiceImpl implements IUserService {
   }
 
   @Override
+  public List<User> getFollowing(Long id) {
+    Optional<User> oldUser = userRepository.findById(id);
+    checkUserExists(oldUser);
+
+    return userRepository.getFollowingById(id);
+  }
+
+  @Override
+  public List<User> getFollowers(Long id) {
+    Optional<User> oldUser = userRepository.findById(id);
+    checkUserExists(oldUser);
+
+    return userRepository.getFollowersById(id);
+  }
+
+
+  @Override
   public User getUserById(Long id) {
     Optional<User> user = userRepository.findById(id);
     checkUserExists(user);

@@ -222,6 +222,8 @@ public class UrlConstant {
     public static final String PREFIX = "/users";
     public static final String LIST = PREFIX;
     public static final String GET = PREFIX + "/{id}";
+    public static final String GET_FOLLOWING = PREFIX + "/{id}/following";
+    public static final String GET_FOLLOWERS = PREFIX + "/{id}/followers";
     public static final String GET_ID_NAME = PREFIX + "/{idName}";
     public static final String CHANGE_AVATAR = PREFIX + "/change-avatar/{id}";
     public static final String FOLLOW = PREFIX + "/follow/{idFollow}";
