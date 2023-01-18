@@ -13,6 +13,10 @@ public interface IUserService {
 
   List<User> getAll();
 
+  List<User> getFollowing(Long id);
+
+  List<User> getFollowers(Long id);
+
   User getUserById(Long id);
 
   User getUserByIdName(String idName);

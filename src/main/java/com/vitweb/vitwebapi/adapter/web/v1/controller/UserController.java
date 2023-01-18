@@ -25,6 +25,16 @@ public class UserController {
     return VsResponseUtil.ok(userService.getAll());
   }
 
+  @GetMapping(UrlConstant.User.GET_FOLLOWING)
+  public ResponseEntity<?> getFollowing(@PathVariable("id") Long id) {
+    return VsResponseUtil.ok(userService.getFollowing(id));
+  }
+
+  @GetMapping(UrlConstant.User.GET_FOLLOWERS)
+  public ResponseEntity<?> getFollowers(@PathVariable("id") Long id) {
+    return VsResponseUtil.ok(userService.getFollowers(id));
+  }
+
   @GetMapping(UrlConstant.User.GET)
   public ResponseEntity<?> getUserById(@PathVariable("id") Long id) {
     return VsResponseUtil.ok(userService.getUserById(id));
